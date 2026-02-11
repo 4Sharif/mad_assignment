@@ -26,33 +26,97 @@ class _ValentineHomeState extends State<ValentineHome> {
   final List<String> emojiOptions = ['Sweet Heart', 'Party Heart'];
   String selectedEmoji = 'Sweet Heart';
 
-  @override
+    @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Cupid\'s Canvas')),
-      body: Column(
-        children: [
-          const SizedBox(height: 16),
-          DropdownButton<String>(
-            value: selectedEmoji,
-            items: emojiOptions
-                .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                .toList(),
-            onChanged: (value) => setState(() => selectedEmoji = value ?? selectedEmoji),
-          ),
-          const SizedBox(height: 16),
-          Expanded(
-            child: Center(
-              child: CustomPaint(
-                size: const Size(300, 300),
-                painter: HeartEmojiPainter(type: selectedEmoji),
+      appBar: AppBar(
+        title: const Text("Cupid's Canvas"),
+        centerTitle: true,
+      ),
+      body: Container(
+        width: double.infinity,
+        color: const Color(0xFFFFF3F7),
+        child: SafeArea(
+          child: Center(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 520),
+                  child: Card(
+                    elevation: 2,
+                    child: Padding(
+                      padding: const EdgeInsets.all(18),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            "Pick a heart to draw",
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                          const SizedBox(height: 12),
+
+                          DropdownButtonFormField<String>(
+                            value: selectedEmoji,
+                            decoration: const InputDecoration(
+                              labelText: "Heart Emoji",
+                              border: OutlineInputBorder(),
+                              isDense: true,
+                            ),
+                            items: emojiOptions
+                                .map((e) => DropdownMenuItem(
+                                      value: e,
+                                      child: Text(e),
+                                    ))
+                                .toList(),
+                            onChanged: (value) {
+                              if (value == null) return;
+                              setState(() => selectedEmoji = value);
+                            },
+                          ),
+
+                          const SizedBox(height: 18),
+
+                          Container(
+                            padding: const EdgeInsets.all(14),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(14),
+                              border: Border.all(color: Colors.black12),
+                            ),
+                            child: AspectRatio(
+                              aspectRatio: 1,
+                              child: Center(
+                                child: CustomPaint(
+                                  size: const Size.square(320),
+                                  painter: HeartEmojiPainter(type: selectedEmoji),
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          const SizedBox(height: 10),
+
+                          Text(
+                            selectedEmoji == 'Party Heart'
+                                ? "Party Heart includes a hat (add confetti next)."
+                                : "Sweet Heart is the simple heart + face.",
+                            style: Theme.of(context).textTheme.bodySmall,
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ),
           ),
-        ],
+        ),
       ),
     );
   }
+
 }
 
 class HeartEmojiPainter extends CustomPainter {
