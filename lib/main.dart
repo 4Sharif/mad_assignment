@@ -33,28 +33,71 @@ class _ValentineHomeState extends State<ValentineHome> {
         title: const Text("Cupid's Canvas"),
         centerTitle: true,
       ),
-      body: Container(
-        width: double.infinity,
-        color: const Color(0xFFFFF3F7),
-        child: SafeArea(
+      body: Stack(
+      children: [
+        Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color(0xFFFFF0F6),
+                Color(0xFFF3ECFF),
+              ],
+            ),
+          ),
+        ),
+        Positioned(
+          top: -40,
+          left: -30,
+          child: _BokehCircle(size: 140, color: Color(0x33FF4D8D)),
+        ),
+        Positioned(
+          top: 120,
+          right: -50,
+          child: _BokehCircle(size: 180, color: Color(0x33A78BFA)),
+        ),
+        Positioned(
+          bottom: 40,
+          left: -60,
+          child: _BokehCircle(size: 220, color: Color(0x22FF4D8D)),
+        ),
+        Positioned(
+          bottom: -40,
+          right: -30,
+          child: _BokehCircle(size: 160, color: Color(0x22A78BFA)),
+        ),
+        SafeArea(
           child: Center(
             child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(20),
                 child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 520),
+                  constraints: const BoxConstraints(maxWidth: 560),
                   child: Card(
-                    elevation: 2,
+                    elevation: 4,
+                    shadowColor: const Color(0x22000000),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18),
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.all(18),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            "Pick a heart to draw",
-                            style: Theme.of(context).textTheme.titleMedium,
+                            "Cupid's Canvas",
+                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                ),
                           ),
-                          const SizedBox(height: 12),
+                          const SizedBox(height: 6),
+                          Text(
+                            "Pick a heart style, then admire your masterpiece.",
+                            style: Theme.of(context).textTheme.bodySmall,
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 14),
 
                           DropdownButtonFormField<String>(
                             value: selectedEmoji,
@@ -75,14 +118,29 @@ class _ValentineHomeState extends State<ValentineHome> {
                             },
                           ),
 
-                          const SizedBox(height: 18),
+                          const SizedBox(height: 16),
 
                           Container(
                             padding: const EdgeInsets.all(14),
                             decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(14),
+                              borderRadius: BorderRadius.circular(18),
+                              gradient: const LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  Color(0xFFFFFFFF),
+                                  Color(0xFFF7F0FF),
+                                ],
+                              ),
                               border: Border.all(color: Colors.black12),
+                              boxShadow: const [
+                                BoxShadow(
+                                  blurRadius: 20,
+                                  spreadRadius: 0,
+                                  color: Color(0x14000000),
+                                  offset: Offset(0, 10),
+                                )
+                              ],
                             ),
                             child: AspectRatio(
                               aspectRatio: 1,
@@ -99,10 +157,21 @@ class _ValentineHomeState extends State<ValentineHome> {
 
                           Text(
                             selectedEmoji == 'Party Heart'
-                                ? "Party Heart includes a hat (add confetti next)."
-                                : "Sweet Heart is the simple heart + face.",
+                                ? "Party Heart: hat + confetti vibes."
+                                : "Sweet Heart: simple heart + face.",
                             style: Theme.of(context).textTheme.bodySmall,
                             textAlign: TextAlign.center,
+                          ),
+
+                          const SizedBox(height: 14),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Icon(Icons.favorite, size: 18, color: Color(0xFFE11D48)),
+                              SizedBox(width: 8),
+                              Text("CustomPainter Valentine Edition"),
+                            ],
                           ),
                         ],
                       ),
@@ -113,7 +182,9 @@ class _ValentineHomeState extends State<ValentineHome> {
             ),
           ),
         ),
-      ),
+      ],
+    ),
+
     );
   }
 
@@ -163,4 +234,23 @@ class HeartEmojiPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant HeartEmojiPainter oldDelegate) => oldDelegate.type != type;
+}
+
+class _BokehCircle extends StatelessWidget {
+  final double size;
+  final Color color;
+
+  const _BokehCircle({required this.size, required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: color,
+      ),
+    );
+  }
 }
