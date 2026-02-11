@@ -51,6 +51,7 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+Asstetss:
 Assets/Images/:
 
   # The following line ensures that the Material Icons font is
